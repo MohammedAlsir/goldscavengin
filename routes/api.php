@@ -27,7 +27,7 @@ Route::middleware('auth:api')->group( function () {
     // get all users
     Route::get('users', 'App\Http\Controllers\Api\UserController@users');
     // chang status
-    Route::post('status/{id}', 'App\Http\Controllers\Api\UserController@status');
+    Route::put('status/{id}', 'App\Http\Controllers\Api\UserController@status');
     // register
     Route::post('register', 'App\Http\Controllers\Api\UserController@register');
     // destroy Route
