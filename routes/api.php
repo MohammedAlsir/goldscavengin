@@ -20,13 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post('login', 'App\Http\Controllers\Api\UserController@login');
-Route::post('register', 'App\Http\Controllers\Api\UserController@register');
 
 // Route for just user
 Route::middleware('auth:api')->group( function () {
     // Route::resource('products', ProductController::class);
     Route::get('users', 'App\Http\Controllers\Api\UserController@users');
     Route::post('status', 'App\Http\Controllers\Api\UserController@status');
+    Route::post('register', 'App\Http\Controllers\Api\UserController@register');
+
 
 
 
