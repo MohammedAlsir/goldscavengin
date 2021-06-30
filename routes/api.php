@@ -24,9 +24,14 @@ Route::post('login', 'App\Http\Controllers\Api\UserController@login');
 // Route for just user
 Route::middleware('auth:api')->group( function () {
     // Route::resource('products', ProductController::class);
+    // get all users
     Route::get('users', 'App\Http\Controllers\Api\UserController@users');
-    Route::post('status', 'App\Http\Controllers\Api\UserController@status');
+    // chang status
+    Route::post('status/{id}', 'App\Http\Controllers\Api\UserController@status');
+    // register
     Route::post('register', 'App\Http\Controllers\Api\UserController@register');
+    // destroy Route
+    Route::delete('destroy/{id}', 'App\Http\Controllers\Api\UserController@destroy');
 
 
 

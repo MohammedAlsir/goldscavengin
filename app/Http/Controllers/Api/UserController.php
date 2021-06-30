@@ -59,19 +59,36 @@ class UserController extends Controller
 
     // get all users => Begin
     public function users(){
-
         // Auth::user()->token();
         $users = User::where('role', 'User')->get();
         return response()->json(['users' => $users], 200);
-
-
     }
     // get all users => End
 
-    // status Function
-    public function status(){
+    // status Function  => Begin
+    public function status(Request $request,$id){
 
+        $data = $request->validate([
+            'status' => 'in:active,nonactive|required',
+        ]);
+
+        $user = User::find($id);
+        $user->status =  $data['status'];
+        $user->save();
+        return response()->json(['user' => $user], 200);
+    }
+    // status function  => End
+
+    // destroy function  => Begin
+    public function destroy($id){
+
+        if(!$user = User::find($id)){
+            return response()->json(['message' => 'this user not found'], 200);
+        }
+
+        $user->delete();
+        return response()->json(['message' => 'succses delete user'], 200);
 
     }
-    // end status function
+    // destroy function  => End
 }
