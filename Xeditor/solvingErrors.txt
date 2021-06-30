@@ -1,0 +1,13 @@
+When making the request we should send header info.
+يجب اضافة السطرين التاليين في البوست مان في    header
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: 'Bearer '. $accessToken
+
+
+
+-title>🧨 Personal access client not found. Please create one.</title>
+   ==>  php artisan passport:install
+
+   --
+
