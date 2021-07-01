@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rule as ValidationRule;
 
 class UserController extends Controller
 {
@@ -91,4 +92,27 @@ class UserController extends Controller
 
     }
     // destroy function  => End
+
+    // edit user data  => Begin
+    public function user(Request $request ){
+        $user = User::find(1);
+
+        $data = $request->validate([
+            'name' => 'min:4',
+            'email' => [ Rule::unique('users')->ignore(User::find(1)->id)],
+            'password' => 'min:8',
+            // 'status' => 'in:active,nonactive',
+            // 'shop' =>'min:1'
+
+        ]);
+        $user->update($data);
+        return response()->json(['user' =>$user , 'message' =>'succses edit user data'], 200);
+
+
+
+
+
+
+    }
+    // edit user data  => End
 }

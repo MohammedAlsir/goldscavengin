@@ -18,23 +18,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+// Route for login
 Route::post('login', 'App\Http\Controllers\Api\UserController@login');
 
 // Route for just user
 Route::middleware('auth:api')->group( function () {
     // Route::resource('products', ProductController::class);
-    // get all users
+
+    // Route for get all users
     Route::get('users', 'App\Http\Controllers\Api\UserController@users');
-    // chang status
+    // Route for chang status
     Route::put('status/{id}', 'App\Http\Controllers\Api\UserController@status');
-    // register
+    // Route for register
     Route::post('register', 'App\Http\Controllers\Api\UserController@register');
-    // destroy Route
+    // Route for destroy
     Route::delete('destroy/{id}', 'App\Http\Controllers\Api\UserController@destroy');
-
-
-
-
+    // Route for edit user data
+    Route::put('user','App\Http\Controllers\Api\UserController@user' );
 
 });
