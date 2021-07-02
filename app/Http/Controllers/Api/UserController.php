@@ -61,7 +61,12 @@ class UserController extends Controller
     // get all users => Begin
     public function users(){
         // Auth::user()->token();
-        $users = User::where('role', 'User')->get();
+        $users = User::where('role', 'User')->orderBy('id', 'desc')->get();
+
+        foreach($users as $user){
+            $user->setAttribute('added_at',$user->created_at->diffForHumans());
+        }
+
         return response()->json(['users' => $users], 200);
     }
     // get all users => End
@@ -93,6 +98,7 @@ class UserController extends Controller
     }
     // destroy function  => End
 
+
     // edit user data  => Begin
     public function user(Request $request ){
         $user = User::find(1);
@@ -107,11 +113,6 @@ class UserController extends Controller
         ]);
         $user->update($data);
         return response()->json(['user' =>$user , 'message' =>'succses edit user data'], 200);
-
-
-
-
-
 
     }
     // edit user data  => End
