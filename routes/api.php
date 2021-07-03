@@ -18,22 +18,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route for login
-Route::post('login', 'App\Http\Controllers\Api\UserController@login');
+// Route for login for Admin
+Route::post('login', 'App\Http\Controllers\Api\AdminController@login');
+// Route for login for User
+Route::post('userlogin/{mac}', 'App\Http\Controllers\Api\UserController@userlogin');
 
 // Route for just user
 Route::middleware('auth:api')->group( function () {
-    // Route::resource('products', ProductController::class);
-
     // Route for get all users
-    Route::get('users', 'App\Http\Controllers\Api\UserController@users');
+    Route::get('users', 'App\Http\Controllers\Api\AdminController@users');
     // Route for chang status
-    Route::put('status/{id}', 'App\Http\Controllers\Api\UserController@status');
+    Route::put('status/{id}', 'App\Http\Controllers\Api\AdminController@status');
     // Route for register
-    Route::post('register', 'App\Http\Controllers\Api\UserController@register');
+    Route::post('register', 'App\Http\Controllers\Api\AdminController@register');
     // Route for destroy
-    Route::delete('destroy/{id}', 'App\Http\Controllers\Api\UserController@destroy');
+    Route::delete('destroy/{id}', 'App\Http\Controllers\Api\AdminController@destroy');
     // Route for edit user data
-    Route::put('user','App\Http\Controllers\Api\UserController@user' );
-
+    Route::put('user','App\Http\Controllers\Api\AdminController@user' );
+    // Route for logout user
+    // Route::post('logout','App\Http\Controllers\Api\AdminController@logout');
 });
+
+//

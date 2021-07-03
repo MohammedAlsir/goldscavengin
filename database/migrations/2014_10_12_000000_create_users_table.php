@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->enum('role', ['Admin', 'User']);
             $table->enum('status', ['active', 'nonactive']);
             // $table->boolean('status')->default(true);
-            $table->string('mac_address')->nullable();
+            $table->string('mac_address')->default('null');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
