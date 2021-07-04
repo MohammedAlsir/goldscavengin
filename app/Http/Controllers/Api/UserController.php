@@ -29,11 +29,23 @@ class UserController extends Controller
                         $user->mac_address = $mac;
                         $user->save();
                         $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-                        return response()->json(['token' => $token , 'user'=> $user], 200);
+                        return response()->json([
+                            'token' => $token ,
+                            'user'=> $user,
+                            'error' => false  ,
+                            'message_en' => '',
+                            'message_ar' => ''
+                            ], 200);
 
                     }elseif(auth()->user()->mac_address == $mac ){
                         $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-                        return response()->json(['token' => $token , 'user'=> Auth::user()], 200);
+                        return response()->json([
+                            'token' => $token ,
+                            'user'=> Auth::user(),
+                            'error' => false  ,
+                            'message_en' => '',
+                            'message_ar' => ''
+                        ], 200);
                     }else{
                         return response()->json([
                             // 'message' =>'Sorry, if you are trying to login from a different phone, please check with the administration',

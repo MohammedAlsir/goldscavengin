@@ -34,7 +34,12 @@ class AdminController extends Controller
         //
         $token = $user->createToken('LaravelAuthApp')->accessToken;
 
-        return response()->json(['newUser' =>$user], 200);
+        return response()->json([
+            'newUser' =>$user,
+            'error' => false  ,
+            'message_en' => '',
+            'message_ar' => ''
+        ], 200);
         //
         // return $this->login(request());
     }
@@ -52,7 +57,13 @@ class AdminController extends Controller
         if (Auth::attempt($data)) {
             if (auth()->user()->role == 'Admin'){
                 $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-                return response()->json(['token' => $token , 'user'=> Auth::user()], 200);
+                return response()->json([
+                    'token' => $token ,
+                    'user'=> Auth::user(),
+                    'error' => false  ,
+                    'message_en' => '',
+                    'message_ar' => ''
+                    ], 200);
             }else{
                 return response()->json([
                     'error'     => true ,
@@ -80,7 +91,12 @@ class AdminController extends Controller
             $user->setAttribute('added_at',$user->created_at->diffForHumans());
         }
 
-        return response()->json(['users' => $users], 200);
+        return response()->json([
+            'users' => $users,
+            'error' => false  ,
+            'message_en' => '',
+            'message_ar' => ''
+        ], 200);
     }
     // get all users => End
 
@@ -94,7 +110,12 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->status =  $data['status'];
         $user->save();
-        return response()->json(['user' => $user], 200);
+        return response()->json([
+            'user' => $user,
+            'error' => false  ,
+            'message_en' => '',
+            'message_ar' => ''
+        ], 200);
     }
     // status function  => End
 
@@ -111,6 +132,7 @@ class AdminController extends Controller
 
         $user->delete();
         return response()->json([
+            'error' => false  ,
             'message_ar' => 'succses delete user',
             'message_en' => 'تم حذف المستخدم بنجاح'
         ], 200);
@@ -134,6 +156,7 @@ class AdminController extends Controller
         $user->update($data);
         return response()->json([
             'user' =>$user ,
+            'error' => false  ,
             'message_en' =>'succses edit user data',
             'message_ar' =>'تم تعديل بيانات هذا المستخدم بنجاح'
         ], 200);
