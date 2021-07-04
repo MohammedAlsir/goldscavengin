@@ -54,11 +54,19 @@ class AdminController extends Controller
                 $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
                 return response()->json(['token' => $token , 'user'=> Auth::user()], 200);
             }else{
-                return response()->json(['error' => 'Unauthorised ,Sorry, you do not have access to this page '], 401);
+                return response()->json([
+                    'error'     => true ,
+                    'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                    'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+                ], 401);
             }
 
         } else {
-            return response()->json(['error' => 'Unauthorised , '], 401);
+            return response()->json([
+                'error'     => true ,
+                'message_en'   => 'Sorry, there is an error in your email or password' ,
+                'message_ar'   => 'عفوا ، هناك خطأ في البريد الإلكتروني أو كلمة المرور الخاصة بك' ,
+            ], 401);
         }
     }
     // end Login Function
@@ -94,11 +102,18 @@ class AdminController extends Controller
     public function destroy($id){
 
         if(!$user = User::find($id)){
-            return response()->json(['message' => 'this user not found'], 200);
+            return response()->json([
+                'error' => true  ,
+                'message_en' => 'this user not found',
+                'message_ar' => 'عفوا , هذا المستخدم غير موجود'
+            ], 404);
         }
 
         $user->delete();
-        return response()->json(['message' => 'succses delete user'], 200);
+        return response()->json([
+            'message_ar' => 'succses delete user',
+            'message_en' => 'تم حذف المستخدم بنجاح'
+        ], 200);
 
     }
     // destroy function  => End
@@ -117,7 +132,11 @@ class AdminController extends Controller
 
         ]);
         $user->update($data);
-        return response()->json(['user' =>$user , 'message' =>'succses edit user data'], 200);
+        return response()->json([
+            'user' =>$user ,
+            'message_en' =>'succses edit user data',
+            'message_ar' =>'تم تعديل بيانات هذا المستخدم بنجاح'
+        ], 200);
 
     }
     // edit user data  => End
