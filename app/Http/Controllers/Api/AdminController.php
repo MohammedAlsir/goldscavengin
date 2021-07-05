@@ -69,7 +69,7 @@ class AdminController extends Controller
                     'error'     => true ,
                     'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
                     'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
-                ], 401);
+                ], 200);
             }
 
         } else {
@@ -77,7 +77,7 @@ class AdminController extends Controller
                 'error'     => true ,
                 'message_en'   => 'Sorry, there is an error in your email or password' ,
                 'message_ar'   => 'عفوا ، هناك خطأ في البريد الإلكتروني أو كلمة المرور الخاصة بك' ,
-            ], 401);
+            ], 200);
         }
     }
     // end Login Function
@@ -127,7 +127,7 @@ class AdminController extends Controller
                 'error' => true  ,
                 'message_en' => 'this user not found',
                 'message_ar' => 'عفوا , هذا المستخدم غير موجود'
-            ], 404);
+            ], 200);
         }
 
         $user->delete();
