@@ -37,6 +37,10 @@ Route::middleware('auth:api')->group( function () {
     Route::put('user','App\Http\Controllers\Api\AdminController@user' );
     // Route for logout user
     // Route::post('logout','App\Http\Controllers\Api\AdminController@logout');
+
+    // GoldBar Route
+    Route::apiResource('goldbar', 'App\Http\Controllers\Api\userOpration\GoldBarController');
+
 });
 
 //
