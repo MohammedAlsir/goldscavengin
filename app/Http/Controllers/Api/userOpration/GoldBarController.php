@@ -21,7 +21,7 @@ class GoldBarController extends Controller
         $goldBarOwners = GoldBar::all();
         return response()->json([
             'goldBarOwners' => $goldBarOwners,
-            'error' => false  ,
+            'error' => false,
             'message_en' => '',
             'message_ar' => ''
         ], 200);
@@ -45,28 +45,43 @@ class GoldBarController extends Controller
      */
     public function store(Request $request)
     {
-        //Begin Store
-        $data = $request->validate(
-            [
-                'gold_bar_owner' => 'required',
-                'gold_ingot_weight' => 'required',
-                'sample_weight' => 'required',
-                'gold_karat_weight' => 'required',
-                // 'role' =>
-            ]);
+        if (auth()->user()->role == 'User') {
+            //Begin Store
+            $data = $request->validate(
+                [
+                    // الاسم
+                    'gold_bar_owner'        => 'required',
+                    //وزن السبيكة
+                    'gold_ingot_weight'     => 'required|numeric|min:0',
+                    // وزن العينة
+                    'sample_weight'         => 'required|numeric|min:0',
+                    //عيار الذهب
+                    'gold_karat_weight'     => 'required|numeric|min:0',
 
+                    'net'                   => 'numeric|min:0',
+                ]
+            );
 
-        $goldBarOwner = GoldBar::create($data);
+            $data['net'] =
+                ($request->gold_ingot_weight + $request->sample_weight + $request->gold_karat_weight) / 875;
 
-        //
+            $goldBarOwner = GoldBar::create($data);
 
-        return response()->json([
-            'goldBarOwner' =>$goldBarOwner,
-            'error' => false  ,
-            'message_en' => '',
-            'message_ar' => ''
-        ], 200);
-        // End Store
+            return response()->json([
+                'goldBarOwner' => $goldBarOwner,
+                'error' => false,
+                'message_en' => '',
+                'message_ar' => ''
+            ], 200);
+            // End Store
+        } else {
+            return response()->json([
+                // 'error' => 'Sorry, Your account is for administration, you can not log in here',
+                'error'     => true ,
+                'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+            ], 200);
+        }
     }
 
     /**

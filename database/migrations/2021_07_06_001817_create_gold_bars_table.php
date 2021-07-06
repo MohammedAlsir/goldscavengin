@@ -16,9 +16,11 @@ class CreateGoldBarsTable extends Migration
         Schema::create('gold_bars', function (Blueprint $table) {
             $table->id();
             $table->string('gold_bar_owner');
-            $table->string('gold_ingot_weight');
-            $table->string('sample_weight');
-            $table->string('gold_karat_weight');
+            $table->float('gold_ingot_weight');
+            $table->float('sample_weight');
+            $table->float('gold_karat_weight');
+            $table->float('net');
+            // $table->float('amount', 8, 2);
             $table->timestamps();
         });
     }
