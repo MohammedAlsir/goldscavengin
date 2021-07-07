@@ -97,7 +97,27 @@ class GoldBarController extends Controller
      */
     public function show($id)
     {
-        //
+         //Show Start
+         if (auth()->user()->role == 'User') {
+            //Begin Show
+            $goldBarOwner = GoldBar::find($id);
+
+            return response()->json([
+                'goldBarOwner' =>$goldBarOwner,
+                'error' => false,
+                'message_en' => '',
+                'message_ar' => ''
+            ], 200);
+            // End Show
+        } else {
+            return response()->json([
+                // 'error' => 'Sorry, Your account is for administration, you can not log in here',
+                'error'     => true ,
+                'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+            ], 200);
+        }
+        //Show End
     }
 
     /**
@@ -120,7 +140,52 @@ class GoldBarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Update Start
+        if (auth()->user()->role == 'User') {
+            //Begin Update
+            $goldBarOwner = GoldBar::find($id);
+            $data = $request->validate(
+                [
+                    // الاسم
+                    'gold_bar_owner'        => '',
+                    //وزن السبيكة
+                    'gold_ingot_weight'     => 'numeric|min:0',
+                    // وزن العينة
+                    'sample_weight'         => 'numeric|min:0',
+                    //عيار الذهب
+                    'gold_karat_weight'     => 'numeric|min:0',
+                    //
+                    'net'                   => 'numeric|min:0',
+                    //تاريخ الاضافة
+                    'date_add'              =>''
+                ]
+            );
+
+
+            $data['net'] =
+                ($request->gold_ingot_weight + $request->sample_weight + $request->gold_karat_weight) / 875;
+
+
+            $goldBarOwner->update($data);
+            // $goldBarOwner->update($data);
+
+
+            return response()->json([
+                'goldBarOwner' => $goldBarOwner,
+                'error' => false,
+                'message_en' => '',
+                'message_ar' => ''
+            ], 200);
+            // End Update
+        } else {
+            return response()->json([
+                // 'error' => 'Sorry, Your account is for administration, you can not log in here',
+                'error'     => true ,
+                'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+            ], 200);
+        }
+        //Update End
     }
 
     /**
@@ -131,6 +196,30 @@ class GoldBarController extends Controller
      */
     public function destroy($id)
     {
-        //
+         //Remove Start
+         if (auth()->user()->role == 'User') {
+            //Begin Store
+            $goldBarOwner = GoldBar::find($id);
+
+            $goldBarOwner->delete();
+            // $goldBarOwner->update($data);
+
+
+            return response()->json([
+
+                'error' => false,
+                'message_en' => 'This item has been deleted successfully',
+                'message_ar' => 'تم حذف هذا العنصر بنجاح'
+            ], 200);
+            // End Store
+        } else {
+            return response()->json([
+                // 'error' => 'Sorry, Your account is for administration, you can not log in here',
+                'error'     => true ,
+                'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+            ], 200);
+        }
+        //Remove End
     }
 }
