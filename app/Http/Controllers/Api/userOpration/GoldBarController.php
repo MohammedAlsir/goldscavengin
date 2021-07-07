@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\userOpration;
 
 use App\Http\Controllers\Controller;
 use App\Models\GoldBar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,13 +58,17 @@ class GoldBarController extends Controller
                     'sample_weight'         => 'required|numeric|min:0',
                     //عيار الذهب
                     'gold_karat_weight'     => 'required|numeric|min:0',
-
+                    //
                     'net'                   => 'numeric|min:0',
+                    //تاريخ الاضافة
+                    'date_add'              =>'required'
                 ]
             );
 
+
             $data['net'] =
                 ($request->gold_ingot_weight + $request->sample_weight + $request->gold_karat_weight) / 875;
+
 
             $goldBarOwner = GoldBar::create($data);
 

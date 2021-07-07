@@ -20,6 +20,7 @@ class CreateGoldBarsTable extends Migration
             $table->float('sample_weight');
             $table->float('gold_karat_weight');
             $table->float('net');
+            $table->string('date_add');
             // $table->float('amount', 8, 2);
             $table->timestamps();
         });
