@@ -14,6 +14,7 @@ class CreateGoldBarsTable extends Migration
     public function up()
     {
         Schema::create('gold_bars', function (Blueprint $table) {
+            Schema::dropIfExists('gold_bars');
             $table->id();
             $table->string('gold_bar_owner');
             $table->float('gold_ingot_weight');
@@ -21,6 +22,9 @@ class CreateGoldBarsTable extends Migration
             $table->float('gold_karat_weight');
             $table->float('net');
             $table->string('date_add');
+            $table->foreignId('user_id')->constrained();
+
+
             // $table->float('amount', 8, 2);
             $table->timestamps();
         });

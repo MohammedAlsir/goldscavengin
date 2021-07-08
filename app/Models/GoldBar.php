@@ -23,6 +23,7 @@ class GoldBar extends Model
         'sample_weight',
         'gold_karat_weight',
         'net',
-        'date_add'
+        'date_add',
+        'user_id'
     ];
 }

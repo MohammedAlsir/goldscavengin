@@ -19,13 +19,25 @@ class GoldBarController extends Controller
      */
     public function index()
     {
-        $goldBarOwners = GoldBar::all();
-        return response()->json([
-            'goldBarOwners' => $goldBarOwners,
-            'error' => false,
-            'message_en' => '',
-            'message_ar' => ''
-        ], 200);
+        if (auth()->user()->role == 'User') {
+            //Begin Index
+            $goldBarOwners = GoldBar::where('user_id', auth()->user()->id)->get();
+            return response()->json([
+                'goldBarOwners' => $goldBarOwners,
+                'error' => false,
+                'message_en' => '',
+                'message_ar' => ''
+            ], 200);
+            //Begin Index
+
+        } else {
+            return response()->json([
+                // 'error' => 'Sorry, Your account is for administration, you can not log in here',
+                'error'     => true ,
+                'message_en'   => 'Unauthorised ,Sorry, you do not have access to this page ' ,
+                'message_ar'   => 'عفوا ، ليس لديك صلاحيات الوصول إلى هذه الصفحة' ,
+            ], 200);
+        }
     }
 
     /**
@@ -61,14 +73,17 @@ class GoldBarController extends Controller
                     //
                     'net'                   => 'numeric|min:0',
                     //تاريخ الاضافة
-                    'date_add'              =>'required'
+                    'date_add'              =>'required',
+
+                    // 'user_id'              =>''
+
                 ]
             );
 
 
             $data['net'] =
                 ($request->gold_ingot_weight + $request->sample_weight + $request->gold_karat_weight) / 875;
-
+            $data['user_id'] = auth()->user()->id;
 
             $goldBarOwner = GoldBar::create($data);
 
@@ -98,9 +113,10 @@ class GoldBarController extends Controller
     public function show($id)
     {
          //Show Start
-         if (auth()->user()->role == 'User') {
+         $goldBarOwner = GoldBar::find($id);
+
+         if (auth()->user()->role == 'User' && auth()->user()->id == $goldBarOwner->user_id ) {
             //Begin Show
-            $goldBarOwner = GoldBar::find($id);
 
             return response()->json([
                 'goldBarOwner' =>$goldBarOwner,
@@ -141,29 +157,31 @@ class GoldBarController extends Controller
     public function update(Request $request, $id)
     {
         //Update Start
-        if (auth()->user()->role == 'User') {
+        $goldBarOwner = GoldBar::find($id);
+
+        if (auth()->user()->role == 'User' && auth()->user()->id == $goldBarOwner->user_id ) {
             //Begin Update
-            $goldBarOwner = GoldBar::find($id);
             $data = $request->validate(
                 [
                     // الاسم
                     'gold_bar_owner'        => '',
                     //وزن السبيكة
-                    'gold_ingot_weight'     => 'numeric|min:0',
+                    'gold_ingot_weight'     => 'required|numeric|min:0',
                     // وزن العينة
-                    'sample_weight'         => 'numeric|min:0',
+                    'sample_weight'         => 'required|numeric|min:0',
                     //عيار الذهب
-                    'gold_karat_weight'     => 'numeric|min:0',
+                    'gold_karat_weight'     => 'required|numeric|min:0',
                     //
                     'net'                   => 'numeric|min:0',
                     //تاريخ الاضافة
-                    'date_add'              =>''
+                    // 'date_add'              =>''
                 ]
             );
 
 
             $data['net'] =
                 ($request->gold_ingot_weight + $request->sample_weight + $request->gold_karat_weight) / 875;
+
 
 
             $goldBarOwner->update($data);
@@ -196,10 +214,11 @@ class GoldBarController extends Controller
      */
     public function destroy($id)
     {
+        $goldBarOwner = GoldBar::find($id);
+
          //Remove Start
-         if (auth()->user()->role == 'User') {
+         if (auth()->user()->role == 'User' && auth()->user()->id == $goldBarOwner->user_id) {
             //Begin Store
-            $goldBarOwner = GoldBar::find($id);
 
             $goldBarOwner->delete();
             // $goldBarOwner->update($data);
